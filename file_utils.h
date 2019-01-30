@@ -112,7 +112,7 @@ int read_config_file(FILE* config, struct config_values *settings) {
     return 0;
 }
 
-//TODO: MINOR ERRORS STILL LEFT IN READING IN THE META-DATA
+//TODO: IMPORT MEMORY OPS
 
 //sets action data based on provided string
 int set_action_data(char *command, struct sim_action *action) {
@@ -125,6 +125,11 @@ int set_action_data(char *command, struct sim_action *action) {
     op_iter = 0;
     op_flag = FALSE;
     current_char = command[i];
+
+    if (!str_contains(command, "(") || !str_contains(command, ")")
+    || !str_contains(command, ";")) {
+        return 18;
+    }
 
     while (i < cmd_length) {
         if (!(current_char == ' ') 
@@ -145,6 +150,9 @@ int set_action_data(char *command, struct sim_action *action) {
             } else if (!str_cmp(op_str, "hard drive") && !str_cmp(op_str, "printer")
             && !str_cmp(op_str, "monitor") && action->command_letter == 'O') {
                 return 15;
+            } else if (!str_cmp(op_str, "allocate") && !str_cmp(op_str, "access") 
+            && action->command_letter == 'M') {
+                return 16;
             }
             str_copy(op_str, action->operation_string);
             op_flag = FALSE;
@@ -160,6 +168,9 @@ int set_action_data(char *command, struct sim_action *action) {
         i++;
         current_char = command[i];
     }
+    if (value < 0) {
+        return 17;
+    }
     action->assoc_val = value;
     return 0;
 }
@@ -174,10 +185,7 @@ int read_meta_data_file(FILE *mdf, struct sim_action **first_action) {
 
     current = *first_action;
 
-    //TODO: FIX OP STIRNG
-
     while (fgets(line, 100, mdf)) {
-        //printf("COMMAND_ORIG:\n" );
         if (!str_contains(line, "Start Program Meta-Data") && !str_contains(line, "End Program Meta-Data")) {
             line_length = str_len(line);
             for (i = 0; i < line_length; i++) {

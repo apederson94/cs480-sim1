@@ -39,8 +39,23 @@ void free_actions(struct sim_action* head) {
 
 //prints all relevant sim_action info.
 //useful for debugging
-void print_sim_action(struct sim_action* src) {
-    printf("Command: %c, op_str: %s, assoc_val: %d\n", src->command_letter, src->operation_string, src->assoc_val);
+void print_sim_action(struct sim_action *src) {
+    printf("Op code letter: %c\n", src->command_letter);
+    printf("Op code name  : %s\n", src->operation_string);
+    printf("Op code value : %d\n", src->assoc_val);
+}
+
+//prints all relevant config_values info
+void print_config_values(struct config_values *src) {
+    printf("Version                : %f\n", src->ver);
+    printf("Program file name      : %s\n", src->mdf_path);
+    printf("CPU schedule selection : %s\n", src->cpu_sched);
+    printf("Quantum time           : %d\n", src->quantum_time);
+    printf("Memory Available       : %d\n", src->memory_available);
+    printf("Process cycle rate     : %d\n", src->cpu_cycle_time);
+    printf("I/O cycle rate         : %d\n", src->io_cycle_time);
+    printf("Log to selection       : %s\n", src->log_to);
+    printf("Log file name          : %s\n", src->log_path);
 }
 
 #endif

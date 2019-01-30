@@ -86,11 +86,25 @@ int main(int argc, char const *argv[]) {
     } else if (mdf_val == 15) {
         fprintf(stderr, "ERROR: The \"O\" command letter can only be used with the \"hard drive\", \"printer\", & \"monitor\" operation strings.\n");
         exit(mdf_val);
+    } else if (mdf_val == 16) {
+        fprintf(stderr, "ERROR: The \"M\" command letter can only be used with the \"access\" & \"allocate\" operation strings.\n");
+    } else if (mdf_val == 17) {
+        fprintf(stderr, "ERROR: all numerical values in the meta-data file must be positive.\n");
+        exit(mdf_val);
+    } else if (mdf_val == 18) {
+        fprintf(stderr, "ERROR: Meta-Data File contains corrupted data. Please ensure the correctness of the file and then retry.\n");
+        exit(mdf_val);
     }
     
-    //UNCOMMENT THESE LINES IN ORDER TO PRINT THE ACTIONS
+    printf("Config File Upload Component\n============================\n\n");
+    printf("Config File Display\n===================\n\n");
+    print_config_values(settings);
+    printf("\n");
+    printf("Meta-Data File Upload Component\n===============================\n\n");
+    printf("Meta-Data File Display\n======================\n\n");
     while (actions_head->next) {
         print_sim_action(actions_head);
+        printf("\n");
         actions_head = actions_head->next;
     }
 
