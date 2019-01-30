@@ -108,11 +108,12 @@ int read_config_file(FILE* config, struct config_values *settings) {
             }
         }
         val_iter++;
+        free(value);
     }
     return 0;
 }
 
-//TODO: IMPORT MEMORY OPS
+//TODO: MIX VALGRIND ERRORS
 
 //sets action data based on provided string
 int set_action_data(char *command, struct sim_action *action) {
@@ -192,7 +193,7 @@ int read_meta_data_file(FILE *mdf, struct sim_action **first_action) {
                 command[cmd_iter] = line[i];
                 cmd_iter++;
                 if (line[i] == ';') {
-                    struct sim_action *next = (struct sim_action*) malloc(sizeof(struct sim_action));
+                    struct sim_action *next = (struct sim_action*) malloc(sizeof(struct sim_action*));
                     command[cmd_iter] = '\0';
                     cmd_iter = 0;
                     set_data_res = set_action_data(command, current);
@@ -201,10 +202,12 @@ int read_meta_data_file(FILE *mdf, struct sim_action **first_action) {
                     }
                     current->next = next;
                     current = next;
+                    free(next);
                 }
             }
         }
     }
+    free(current);
     return 0;
 }
 

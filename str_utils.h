@@ -6,7 +6,7 @@
 //string utility functions I have created
 
 //gets string length
-int str_len(const char* string) {
+int str_len(const char *string) {
     char curr = string[0];
     int len = 0;
     while (curr != '\0') {
@@ -30,7 +30,7 @@ void str_copy(char *src, char *dest) {
 }
 
 //reads 3 characters after a period to determine a file extension
-const char* get_file_ext(const char* string, char* ext) {
+const char* get_file_ext(const char *string, char *ext) {
     int iter = 4;
     ext[4] = '\0';
 
@@ -43,7 +43,7 @@ const char* get_file_ext(const char* string, char* ext) {
 }
 
 //compares two strings to each other
-int str_cmp(const char* src, char* target) {
+int str_cmp(const char *src, char *target) {
     int iter = 0;
 
     if (str_len(src) != str_len(target)) {
@@ -61,7 +61,7 @@ int str_cmp(const char* src, char* target) {
 }
 
 //checks to see if string contains another string
-int str_contains(char* src, char* target) {
+int str_contains(char *src, char *target) {
     int iter = 0;
     int target_iter = 0;
     char curr = src[0];

@@ -32,6 +32,9 @@ int main(int argc, char const *argv[]) {
     }
     int cfg_val = read_config_file(config_file, settings);
 
+    //closing the config file as it is no longer needed;
+    fclose(config_file);
+
     //checks the returned value by read_config_file to ensure that no errors occurred
     if (cfg_val > 0) {
         if (cfg_val == 4) {
@@ -61,9 +64,6 @@ int main(int argc, char const *argv[]) {
         }
     }
 
-    //closing the config file as it is no longer needed;
-    fclose(config_file);
-
     //opens the meta data file and checks to make sure it was opened correctly
     FILE* meta_data_file = fopen(settings->mdf_path, "r");
     if (!meta_data_file) {
@@ -72,6 +72,9 @@ int main(int argc, char const *argv[]) {
     }
 
     int mdf_val = read_meta_data_file(meta_data_file, &actions_head);
+
+    //closing the meta data file as it is no longer needed;
+    fclose(meta_data_file);
 
     //error checking for data read from meta data file
     if (mdf_val == 12) {
@@ -98,19 +101,19 @@ int main(int argc, char const *argv[]) {
     
     printf("Config File Upload Component\n============================\n\n");
     printf("Config File Display\n===================\n\n");
+
     print_config_values(settings);
+
     printf("\n");
+
     printf("Meta-Data File Upload Component\n===============================\n\n");
     printf("Meta-Data File Display\n======================\n\n");
+
     while (actions_head->next) {
         print_sim_action(actions_head);
         printf("\n");
         actions_head = actions_head->next;
     }
-
-    //closing the meta data file as it is no longer needed;
-    fclose(meta_data_file);
-
     //freeing linked list acquired from meta-data file
     free_actions(actions_head);
 

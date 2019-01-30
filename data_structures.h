@@ -27,7 +27,7 @@ struct sim_action{
 };
 
 //frees all memory associated with sim_action linked list
-void free_actions(struct sim_action* head) {
+void free_actions(struct sim_action *head) {
     struct sim_action *tmp;
 
     while (head) {
@@ -38,11 +38,19 @@ void free_actions(struct sim_action* head) {
 }
 
 //prints all relevant sim_action info.
-//useful for debugging
 void print_sim_action(struct sim_action *src) {
     printf("Op code letter: %c\n", src->command_letter);
     printf("Op code name  : %s\n", src->operation_string);
     printf("Op code value : %d\n", src->assoc_val);
+}
+
+//prints all relevant sim_action info for all sim_actions in a list
+void print_sim_actions(struct sim_action *head) {
+    while (head->next) {
+        print_sim_action(head);
+        printf("\n");
+        head = head->next;
+    }
 }
 
 //prints all relevant config_values info
