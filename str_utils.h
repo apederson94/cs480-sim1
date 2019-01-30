@@ -17,11 +17,6 @@ int str_len(const char* string) {
     return len;
 }
 
-//gets string capacity
-int str_cap(const char *string) {
-    return sizeof(string);
-}
-
 //copies from one string into another
 void str_copy(char *src, char *dest) {
     int len = str_len(src);
@@ -63,14 +58,6 @@ int str_cmp(const char* src, char* target) {
     }
 
     return TRUE;
-}
-
-//compares two chars to each other
-int char_cmp(char src, char target) {
-    if (src == target) {
-        return TRUE;
-    }
-    return FALSE;
 }
 
 //checks to see if string contains another string
