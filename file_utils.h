@@ -37,7 +37,7 @@ int read_config_file(FILE* config, struct config_values *settings) {
                 //stores log path value if File or Both is chosen, N/A otherwise
                 if (str_cmp(settings->log_to, "File") 
                 || str_cmp(settings->log_to, "Both")) {
-                    settings->log_path = value;
+                    str_copy(value, settings->log_path);
                 } else {
                     settings->log_path = "N/A";
                 }
@@ -108,7 +108,6 @@ int read_config_file(FILE* config, struct config_values *settings) {
             }
         }
         val_iter++;
-        free(value);
     }
     return 0;
 }
@@ -202,12 +201,10 @@ int read_meta_data_file(FILE *mdf, struct sim_action **first_action) {
                     }
                     current->next = next;
                     current = next;
-                    free(next);
                 }
             }
         }
     }
-    free(current);
     return 0;
 }
 

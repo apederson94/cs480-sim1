@@ -32,6 +32,8 @@ int main(int argc, char const *argv[]) {
     }
     int cfg_val = read_config_file(config_file, settings);
 
+    print_config_values(settings);
+
     //closing the config file as it is no longer needed;
     fclose(config_file);
 
