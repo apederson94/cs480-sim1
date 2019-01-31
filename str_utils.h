@@ -264,8 +264,6 @@ void str_rm_non_numbers(char *src) {
         num = src[i] - 48;
         if (num > 9 || num < 0) {
             src[i] = src[i+1];
-            printf("ERROR\n");
-           
         }
     }
 }

@@ -176,14 +176,14 @@ int set_action_data(char *command, struct sim_action *action) {
 }
 
 //reads in all information from the meta data file
-int read_meta_data_file(FILE *mdf, struct sim_action **first_action) {
+int read_meta_data_file(FILE *mdf, struct sim_action *first_action) {
     char line[100];
     int line_length, i, cmd_iter, set_data_res;
     cmd_iter = 0;
     char command[40];
     struct sim_action *current = (struct sim_action*) malloc(sizeof(struct sim_action));
 
-    current = *first_action;
+    current = first_action;
 
     while (fgets(line, 100, mdf)) {
         if (!str_contains(line, "Start Program Meta-Data") && !str_contains(line, "End Program Meta-Data")) {

@@ -23,13 +23,14 @@ int main(int argc, char const *argv[]) {
         fprintf(stderr, "ERROR: sim0x can only read in .cnf files.\n");
         exit(2);
     }
-
+	
     //opens the config file and checks to make sure it was opened correctly
     FILE *config_file = fopen(file_name, "r");
     if (!config_file) {
         fprintf(stderr, "ERROR: sim0x could not open the specified config file.\n");
         exit(3);
     }
+	
     int cfg_val = read_config_file(config_file, settings);
 
     //checks the returned value by read_config_file to ensure that no errors occurred
@@ -63,16 +64,16 @@ int main(int argc, char const *argv[]) {
 
     //closing the config file as it is no longer needed;
     fclose(config_file);
-
+	
     //opens the meta data file and checks to make sure it was opened correctly
     FILE* meta_data_file = fopen(settings->mdf_path, "r");
     if (!meta_data_file) {
         printf("ERROR: sim0x could not open the specified meta data file.");
         exit(1);
     }
-
-    int mdf_val = read_meta_data_file(meta_data_file, &actions_head);
-
+	
+    int mdf_val = read_meta_data_file(meta_data_file, actions_head);
+	
     //error checking for data read from meta data file
     if (mdf_val == 12) {
         fprintf(stderr, "ERROR: The \"S\" & \"A\" command letters can only be used with the \"start\" & \"end\" operation strings.\n");
@@ -107,7 +108,7 @@ int main(int argc, char const *argv[]) {
         printf("\n");
         actions_head = actions_head->next;
     }
-
+    
     //closing the meta data file as it is no longer needed;
     fclose(meta_data_file);
 
