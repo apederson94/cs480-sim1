@@ -1,7 +1,7 @@
 #ifndef BOOLEANS
 #define BOOLEANS
 
-//defines boolean values for easier boolean usage
+//TRUE & FALSE VALUES FOR BETTER READABILITY
 
 #define TRUE 1;
 #define FALSE 0;
