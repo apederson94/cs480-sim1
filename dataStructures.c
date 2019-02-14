@@ -1,5 +1,6 @@
 #include "dataStructures.h"
 #include "booleans.h"
+#include "errors.h"
 
 //DATA STRUCTURE FUNCTIONS
 
@@ -65,7 +66,7 @@ int set_action_data(char *command, struct simAction *action)
     if (!str_contains(command, "(") || !str_contains(command, ")")
     || !str_contains(command, ";")) 
     {
-        return 18;
+        return CORRUPTED_MDF_ERROR;
     }
 
     while (i < cmd_length) {
@@ -85,26 +86,26 @@ int set_action_data(char *command, struct simAction *action)
             if ((!str_cmp(op_str, "start") && !str_cmp(op_str, "end")
             && (action->command_letter == 'S' || action->command_letter == 'A'))) 
             {
-                return 12;
+                return SA_OP_STRING_ERROR;
 
             } else if (!str_cmp(op_str, "run") && action->command_letter == 'P') 
             {
-                return 13;
+                return P_OP_STRING_ERROR;
 
             } else if (!str_cmp(op_str, "hard drive") && !str_cmp(op_str, "keyboard")
             && action->command_letter == 'I') 
             {
-                return 14;
+                return I_OP_STRING_ERROR;
                 
             } else if (!str_cmp(op_str, "hard drive") && !str_cmp(op_str, "printer")
             && !str_cmp(op_str, "monitor") && action->command_letter == 'O') 
             {
-                return 15;
+                return O_OP_STRING_ERROR;
 
             } else if (!str_cmp(op_str, "allocate") && !str_cmp(op_str, "access") 
             && action->command_letter == 'M') 
             {
-                return 16;
+                return M_OP_STRING_ERROR;
             }
             str_copy(op_str, action->operation_string);
             op_flag = FALSE;
@@ -123,7 +124,7 @@ int set_action_data(char *command, struct simAction *action)
         current_char = command[i];
     }
     if (value < 0) {
-        return 17;
+        return NEGATIVE_MDF_VALUE_ERROR;
     }
     action->assoc_val = value;
     return 0;

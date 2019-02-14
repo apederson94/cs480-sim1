@@ -1,12 +1,13 @@
 #include <stdio.h>
-#include "str_utils.h"
+#include "strUtils.h"
 #include "booleans.h"
-#include "data_structures.h"
+#include "dataStructures.h"
+#include "errors.h"
 
 //ALL FILE-RELATED UTILITIES
 
 //READS AND STORES ALL VALUES FROM CONFIG FILE
-int read_config_file(char *fileName, struct configValues *settings) 
+int readConfigFile(char *fileName, struct configValues *settings) 
 {
     char line[100];
     int pos;
@@ -30,7 +31,7 @@ int read_config_file(char *fileName, struct configValues *settings)
                 float ver = a2f(value);
 
                 if (ver > 10.0f || ver < 0.0f) {
-                    return 4;
+                    return VERSION_PHASE_VALUE_ERROR;
                 }
 
                 settings->ver = ver;
@@ -59,7 +60,7 @@ int read_config_file(char *fileName, struct configValues *settings)
 
                 } else if (!check_cpu_sched(value)) 
                 {
-                    return 5;
+                    return UNSUPPORTED_CPU_SCHED_ERROR;
 
                  } else 
                  {
@@ -72,7 +73,7 @@ int read_config_file(char *fileName, struct configValues *settings)
                 int num = a2i(value);
 
                 if (num > 100 || num < 0) {
-                    return 6;
+                    return QUANTUM_TIME_VALUE_ERROR;
                 }
 
                 settings->quantum_time = num;
@@ -80,7 +81,7 @@ int read_config_file(char *fileName, struct configValues *settings)
             } else if (str_contains(line, "Memory Available")) 
             {
                 if (!str_contains(line, "(KB)")) {
-                    return 19;
+                    return MDF_MEMORY_UNIT_ERROR;
                 }
 
                 remove_non_symbols(value);
@@ -88,7 +89,7 @@ int read_config_file(char *fileName, struct configValues *settings)
 
                 if (num < 0 || num > 102400) 
                 {
-                    return 7;
+                    return MEMORY_AVAIL_VALUE_ERROR;
                 }
 
                 settings->memory_available = a2i(value);
@@ -100,7 +101,7 @@ int read_config_file(char *fileName, struct configValues *settings)
 
                 if (num < 1 || num > 1000) 
                 {
-                    return 8;
+                    return CPU_CYCLE_TIME_VALUE_ERROR;
                 }
 
                 settings->cpu_cycle_time = num;
@@ -112,7 +113,7 @@ int read_config_file(char *fileName, struct configValues *settings)
 
                 if (num < 1 || num > 10000) 
                 {
-                    return 9;
+                    return IO_CYCLE_TIME_VALUE_ERROR;
                 }
 
                 settings->io_cycle_time = num;
@@ -123,7 +124,7 @@ int read_config_file(char *fileName, struct configValues *settings)
 
                 if (!check_log_to(value)) 
                 {
-                    return 10;
+                    return INVALID_LOG_TO_ERROR;
                 }
                 settings->log_to = value;
 
@@ -132,7 +133,7 @@ int read_config_file(char *fileName, struct configValues *settings)
                 remove_non_symbols(value);
 
                 if (str_contains(value, "/")) {
-                    return 11;
+                    return MDF_LOCATION_ERROR;
                 }
 
                 settings->mdf_path = value;
@@ -142,17 +143,20 @@ int read_config_file(char *fileName, struct configValues *settings)
         val_iter++;
     }
 
+    fclose(config);
+
     return 0;
 }
 
 //READS ALL INFORMATION FROM META-DATA FILE
-int read_metaDataFile(FILE *mdf, struct simAction *firstAction) 
+int readMetaDataFile(char *fileName, struct simAction *firstAction) 
 {
     char line[100];
     int line_length, i, cmd_iter, set_data_result;
     cmd_iter = 0;
     char command[40];
     struct simAction *current = (struct simAction*) malloc(sizeof(struct simAction));
+    FILE *mdf = open_memstream(fileName, 'r');
 
     current = firstAction;
 
@@ -186,5 +190,8 @@ int read_metaDataFile(FILE *mdf, struct simAction *firstAction)
             }
         }
     }
+
+    fclose(mdf);
+
     return 0;
 }

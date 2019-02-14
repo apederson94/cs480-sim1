@@ -26,7 +26,7 @@ void displayError(int err)
     {
         fprintf(stderr, "ERROR: The \"M\" command letter can only be used with the \"access\" & \"allocate\" operation strings.\n");
     } 
-    else if (err == NEGATIVE_mdfValUE_ERROR) 
+    else if (err == NEGATIVE_MDF_VALUE_ERROR)
     {
         fprintf(stderr, "ERROR: all numerical values in the meta-data file must be positive.\n");
     } 
