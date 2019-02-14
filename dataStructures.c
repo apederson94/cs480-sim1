@@ -69,17 +69,20 @@ int set_action_data(char *command, struct simAction *action)
         return CORRUPTED_MDF_ERROR;
     }
 
-    while (i < cmd_length) {
+    while (i < cmd_length) 
+    {
         if (!(current_char == ' ') 
         && char_is_upper(current_char)) 
         {
             action->command_letter = command[i];
 
-        } else if (current_char == '(') 
+        } 
+        else if (current_char == '(') 
         {
             op_flag = TRUE;
 
-        } else if (current_char == ')') 
+        } 
+        else if (current_char == ')') 
         {
             op_str[op_iter] = '\0';
 
@@ -88,32 +91,38 @@ int set_action_data(char *command, struct simAction *action)
             {
                 return SA_OP_STRING_ERROR;
 
-            } else if (!str_cmp(op_str, "run") && action->command_letter == 'P') 
+            } 
+            else if (!str_cmp(op_str, "run") && action->command_letter == 'P') 
             {
                 return P_OP_STRING_ERROR;
 
-            } else if (!str_cmp(op_str, "hard drive") && !str_cmp(op_str, "keyboard")
+            } 
+            else if (!str_cmp(op_str, "hard drive") && !str_cmp(op_str, "keyboard")
             && action->command_letter == 'I') 
             {
                 return I_OP_STRING_ERROR;
                 
-            } else if (!str_cmp(op_str, "hard drive") && !str_cmp(op_str, "printer")
+            } 
+            else if (!str_cmp(op_str, "hard drive") && !str_cmp(op_str, "printer")
             && !str_cmp(op_str, "monitor") && action->command_letter == 'O') 
             {
                 return O_OP_STRING_ERROR;
 
-            } else if (!str_cmp(op_str, "allocate") && !str_cmp(op_str, "access") 
+            } 
+            else if (!str_cmp(op_str, "allocate") && !str_cmp(op_str, "access") 
             && action->command_letter == 'M') 
             {
                 return M_OP_STRING_ERROR;
             }
             str_copy(op_str, action->operation_string);
             op_flag = FALSE;
-        } else if (op_flag) 
+        } 
+        else if (op_flag) 
         {
             op_str[op_iter] = current_char;
             op_iter++;
-        } else if (!op_flag 
+        } 
+        else if (!op_flag 
         && !(current_char == ';') 
         && char_is_num(current_char)) 
         {

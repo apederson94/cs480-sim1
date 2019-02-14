@@ -85,7 +85,8 @@ int str_contains(char* src, char* substr)
             substr_char = substr[subsr_iter];
             src_iter++;
 
-        } else 
+        } 
+        else 
         {
             if (subsr_iter == 0) 
             {
@@ -130,7 +131,8 @@ int sub_str_pos(char *src, char *target)
             target_char = target[target_iter];
             src_iter++;
 
-        } else 
+        } 
+        else 
         {
             if (target_iter == 0) 
             {
@@ -267,7 +269,9 @@ int s2i(char *src)
         if (currNum > 0 && currNum < 10) 
         {
             num += currNum;
-        } else {
+        } 
+        else 
+        {
             return NON_NUMERIC_STRING_ERROR;
         }
     }
@@ -345,10 +349,12 @@ int check_log_to(char *src)
 }
 
 //SETTS ALL VALUES IN A STRING TO NULL
-void str_clear(char *src) {
+void str_clear(char *src) 
+{
     int len = str_len(src);
 
-    for (int i = len; i > 0; i--) {
+    for (int i = len; i > 0; i--) 
+    {
         src[i] = '\0';
     }
 }

@@ -62,7 +62,8 @@ int main(int argc, char const *argv[]) {
     mdfVal = read_metaDataFile(metaDataFile, actionsHead);
 	
     //ERROR CHECKING FOR META-DATA FILE READING
-    if (mdfVal > 0) {
+    if (mdfVal > 0) 
+    {
         displayError(mdfVal)
     }
     
