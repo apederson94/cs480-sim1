@@ -2,6 +2,7 @@
     "files.associations": {
         "stdlib.h": "c",
         "str_utils.h": "c",
-        "booleans.h": "c"
+        "booleans.h": "c",
+        "datastructures.h": "c"
     }
 }

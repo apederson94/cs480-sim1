@@ -2,18 +2,17 @@
 #include "str_utils.h"
 #include "booleans.h"
 #include "data_structures.h"
-#ifndef FILE_UTILS
-#define FILE_UTILS
 
 //ALL FILE-RELATED UTILITIES
 
 //READS AND STORES ALL VALUES FROM CONFIG FILE
-int read_config_file(FILE* config, struct config_values *settings) 
+int read_config_file(char *fileName, struct configValues *settings) 
 {
     char line[100];
     int pos;
     int len;
     int val_iter = 0;
+    FILE *config = open(fileName, "r");
 
     while (fgets(line, 100, config)) 
     {
@@ -147,15 +146,15 @@ int read_config_file(FILE* config, struct config_values *settings)
 }
 
 //READS ALL INFORMATION FROM META-DATA FILE
-int read_meta_data_file(FILE *mdf, struct sim_action *first_action) 
+int read_meta_data_file(FILE *mdf, struct simAction *firstAction) 
 {
     char line[100];
     int line_length, i, cmd_iter, set_data_result;
     cmd_iter = 0;
     char command[40];
-    struct sim_action *current = (struct sim_action*) malloc(sizeof(struct sim_action));
+    struct simAction *current = (struct simAction*) malloc(sizeof(struct simAction));
 
-    current = first_action;
+    current = firstAction;
 
     while (fgets(line, 100, mdf)) 
     {
@@ -170,7 +169,7 @@ int read_meta_data_file(FILE *mdf, struct sim_action *first_action)
 
                 if (line[i] == ';') 
                 {
-                    struct sim_action *next = (struct sim_action*) malloc(sizeof(struct sim_action));
+                    struct simAction *next = (struct simAction*) malloc(sizeof(struct simAction));
                     command[cmd_iter] = '\0';
                     cmd_iter = 0;
 
@@ -189,5 +188,3 @@ int read_meta_data_file(FILE *mdf, struct sim_action *first_action)
     }
     return 0;
 }
-
-#endif

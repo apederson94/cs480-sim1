@@ -1,17 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "booleans.h"
-#include "str_utils.h"
-#include "file_utils.h"
-#include "data_structures.h"
+#include "strUtils.h"
+#include "fileUtils.h"
+#include "dataStructures.h"
 
 int main(int argc, char const *argv[]) {
 
     //VARIABLE DECLARATIONS
     char *file_ext;
     char *file_name = (char*) argv[1];
-    struct config_values *settings = (struct config_values*) malloc(sizeof(struct config_values));
-    struct sim_action *actions_head = (struct sim_action*) malloc(sizeof(struct sim_action));
+    struct configValues *settings = (struct configValues*) malloc(sizeof(struct configValues));
+    struct simAction *actions_head = (struct simAction*) malloc(sizeof(struct simAction));
     
     //CORRECT NUMBER OF INPUTS CHECK
     if (argc != 2) 
@@ -124,11 +124,11 @@ int main(int argc, char const *argv[]) {
     //PRINTING RESULTS OF FILE READINGS
     printf("Config File Upload Component\n============================\n\n");
     printf("Config File Display\n===================\n\n");
-    print_config_values(settings);
+    print_configValues(settings);
     printf("\n");
     printf("Meta-Data File Upload Component\n===============================\n\n");
     printf("Meta-Data File Display\n======================\n\n");
-    print_sim_actions(actions_head);
+    print_simActions(actions_head);
     
     fclose(meta_data_file);
 

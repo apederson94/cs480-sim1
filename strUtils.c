@@ -1,8 +1,5 @@
 #include "booleans.h"
-#include <math.h>
-#ifndef STR_UTILS
-#define STR_UTILS
-
+#include "mathUtils.h"
 //ALL STRING-RELATED UTILITIES
 
 //RETURNS STRING LENGTH
@@ -244,7 +241,7 @@ float a2f(char *src)
     {
         if (curr_char - 48 >= 0 && curr_char - 48 < 10) 
         {
-            num += (curr_char - 48) * pow(10, places);
+            num += (curr_char - 48) * raiseToPower(10, places);
             places--;
         }
 
@@ -261,15 +258,15 @@ int a2i(char *src)
 {
     int len = str_len(src);
     int num = 0;
-    int curr_num;
-    for (int i = 0; i < len; i++) 
+    int currNum;
+    for (int pos = 0; pos < len; pos++) 
     {
         num *= 10;
-        curr_num = src[i] - 48;
+        currNum = src[pos] - 48;
 
-        if (curr_num > 0 && curr_num < 48) 
+        if (currNum > 0 && currNum < 48) 
         {
-            num += curr_num;
+            num += currNum;
         }
     }
 
@@ -335,23 +332,11 @@ void str_rm_non_numbers(char *src)
 //CHECKS IF A CHARACTER IS A NUMBER
 int char_is_num(char src) 
 {
-    if (src >= 48 && src <= 58) 
-    {
-        return TRUE;
-    }
-
-    return FALSE;
+    return src >= '0' && src <= 58;
 }
 
 //CHECKS IF A CHARACTER IS UPPERCASE
 int char_is_upper(char src) 
 {
-    if (src > 64 && src < 91) 
-    {
-        return TRUE;
-    }
-
-    return FALSE;
+    return src >= 'A' && src <= 'Z';
 }
-
-#endif

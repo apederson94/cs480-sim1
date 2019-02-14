@@ -1,37 +1,12 @@
-#ifndef DATA_STRUCTURES
-#define DATA_STRUCTURES
+#include "dataStructures.h"
+#include "booleans.h"
 
-//DATA STRUCTURES AND THEIR RELATED FUNCTIONS
+//DATA STRUCTURE FUNCTIONS
 
-//HOLDS CONFIG FILE INFORMATION
-struct config_values
+//FREES ALL MEMORY ASSOCIATED WITH simActionS
+void free_actions(struct simAction* head) 
 {
-    float ver;
-
-    char *mdf_path;
-    char *cpu_sched;
-    char *log_path;
-    char *log_to;
-
-    int quantum_time;
-    int memory_available;
-    int cpu_cycle_time;
-    int io_cycle_time;
-};
-
-//HOLDS ALL INFORMATION PERTAINING TO ONE ACTION
-struct sim_action 
-{
-    char command_letter;
-    char operation_string[20];
-    int assoc_val;
-    struct sim_action *next;
-};
-
-//FREES ALL MEMORY ASSOCIATED WITH SIM_ACTIONS
-void free_actions(struct sim_action* head) 
-{
-    struct sim_action *tmp;
+    struct simAction *tmp;
 
     while (head) 
     {
@@ -41,27 +16,27 @@ void free_actions(struct sim_action* head)
     }
 }
 
-//PRINTS ALL RELEVANT SIM_ACTION INFORMATION
-void print_sim_action(struct sim_action *src) 
+//PRINTS ALL RELEVANT simAction INFORMATION
+void print_simAction(struct simAction *src) 
 {
     printf("Op code letter: %c\n", src->command_letter);
     printf("Op code name  : %s\n", src->operation_string);
     printf("Op code value : %d\n", src->assoc_val);
 }
 
-//PRINTS ALL ALL RELEVANT SIM_ACTION INFORMATION FOR ALL SIM_ACTIONS
-void print_sim_actions(struct sim_action *head) 
+//PRINTS ALL ALL RELEVANT simAction INFORMATION FOR ALL simActionS
+void print_simActions(struct simAction *head) 
 {
     while (head->next) 
     {
-        print_sim_action(head);
+        print_simAction(head);
         printf("\n");
         head = head->next;
     }
 }
 
-//PRINTS ALL INFORMATION FORM A CONFIG_VALUES STRUCT
-void print_config_values(struct config_values *src) 
+//PRINTS ALL INFORMATION FORM A configValues STRUCT
+void print_configValues(struct configValues *src) 
 {
     printf("Version                : %f\n", src->ver);
     printf("Program file name      : %s\n", src->mdf_path);
@@ -75,7 +50,7 @@ void print_config_values(struct config_values *src)
 }
 
 //TURNS A COMMAND STRING INTO AN ACTION
-int set_action_data(char *command, struct sim_action *action) 
+int set_action_data(char *command, struct simAction *action) 
 {
     int cmd_length, i, op_flag, op_iter, value;
     char current_char, op_str[20];
@@ -153,5 +128,3 @@ int set_action_data(char *command, struct sim_action *action)
     action->assoc_val = value;
     return 0;
 }
-
-#endif
