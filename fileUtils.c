@@ -146,7 +146,7 @@ int read_config_file(char *fileName, struct configValues *settings)
 }
 
 //READS ALL INFORMATION FROM META-DATA FILE
-int read_meta_data_file(FILE *mdf, struct simAction *firstAction) 
+int read_metaDataFile(FILE *mdf, struct simAction *firstAction) 
 {
     char line[100];
     int line_length, i, cmd_iter, set_data_result;

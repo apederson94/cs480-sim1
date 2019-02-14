@@ -10,7 +10,7 @@ int str_len(const char* string);
 void str_copy(char *src, char *dest);
 
 //READS THE LAST 4 OF A STRING TO DETERMINE THE EXTENSION
-char* get_file_ext(char* src);
+char* get_fileExt(char* src);
 
 //COMPARES TWO STRINGS
 int str_cmp(const char* src, char* target);
@@ -34,10 +34,10 @@ void remove_newline(char *src);
 void remove_non_symbols(char *src);
 
 //CONVERTS A STRING TO A FLOAT VALUE
-float a2f(char *src);
+float s2f(char *src);
 
 //converts a string into an int value
-int a2i(char *src);
+int s2i(char *src);
 
 //CHECKS PROVIDED STRING AGAINST COMPATIBLE SCHEDULER TYPES
 int check_cpu_sched(char *src);

@@ -32,7 +32,7 @@ void str_copy(char *src, char *dest)
 }
 
 //READS THE LAST 4 OF A STRING TO DETERMINE THE EXTENSION
-char* get_file_ext(char* src) 
+char* get_fileExt(char* src) 
 {
     int len = str_len(src);
     char *ext = (char*) malloc(sizeof(char) * 5);
@@ -229,7 +229,7 @@ void remove_non_symbols(char *src)
 }
 
 //CONVERTS A STRING TO A FLOAT VALUE
-float a2f(char *src) 
+float s2f(char *src) 
 {
     int iter = 0;
     char curr_char = src[0];
@@ -254,7 +254,7 @@ float a2f(char *src)
 }
 
 //converts a string into an int value
-int a2i(char *src) 
+int s2i(char *src) 
 {
     int len = str_len(src);
     int num = 0;
@@ -262,15 +262,58 @@ int a2i(char *src)
     for (int pos = 0; pos < len; pos++) 
     {
         num *= 10;
-        currNum = src[pos] - 48;
+        currNum = cs2(src[pos]);
 
-        if (currNum > 0 && currNum < 48) 
+        if (currNum > 0 && currNum < 10) 
         {
             num += currNum;
+        } else {
+            return NON_NUMERIC_STRING_ERROR;
         }
     }
 
     return num;
+}
+
+//EVALUATES A SINGLE CHAR TO AN INT
+int c2i(char src)
+{
+    int num;
+    switch (src)
+    {
+        case '0':
+            num = 0;
+            break;
+        case '1':
+            num = 1;
+            break;
+        case '2':
+            num = 2;
+            break;
+        case '3':
+            num = 3;
+            break;
+        case '4':
+            num = 4;
+            break;
+        case '5':
+            num = 5;
+            break;
+        case '6':
+            num = 6;
+            break;
+        case '7':
+            num = 7;
+            break;
+        case '8':
+            num = 8;
+            break;
+        case '9':
+            num = 9;
+            break;
+        default:
+            num = 
+    }
 }
 
 //CHECKS PROVIDED STRING AGAINST COMPATIBLE SCHEDULER TYPES
