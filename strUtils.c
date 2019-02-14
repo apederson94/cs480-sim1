@@ -1,9 +1,11 @@
 #include "booleans.h"
 #include "mathUtils.h"
+#include "errors.h"
+
 //ALL STRING-RELATED UTILITIES
 
 //RETURNS STRING LENGTH
-int str_len(const char* string) 
+int strLen(const char* string) 
 {
     char curr = string[0];
     int len = 0;
@@ -17,48 +19,48 @@ int str_len(const char* string)
 }
 
 //COPIES ONE STRING INTO ANOTHER
-void str_copy(char *src, char *dest) 
+void strCopy(char *src, char *dest) 
 {
-    int len = str_len(src);
-    int i;
+    int len = strLen(src);
+    int pos;
     if (src && dest) 
     {
-        for (i = 0; i < len; i++) 
+        for (pos = 0; pos < len; pos++) 
         {
-            dest[i] = src[i];
+            dest[pos] = src[pos];
         }
-        dest[i] = '\0';
+        dest[pos] = '\0';
     }
 }
 
 //READS THE LAST 4 OF A STRING TO DETERMINE THE EXTENSION
-char* get_fileExt(char* src) 
+char* getFileExt(char* src) 
 {
-    int len = str_len(src);
+    int len = strLen(src);
     char *ext = (char*) malloc(sizeof(char) * 5);
     ext[4] = '\0';
 
-    for (int i = 4; i > 0; i--) 
+    for (int pos = 4; pos > 0; pos--) 
     {
-        ext[4-i] = src[len-i];
+        ext[4-pos] = src[len-pos];
     }
 
     return ext;
 }
 
 //COMPARES TWO STRINGS
-int str_cmp(const char* src, char* target) 
+int strCmp(const char* src, char* target) 
 {
-    int src_len = str_len(src);
+    int src_len = strLen(src);
 
-    if (src_len != str_len(target)) 
+    if (src_len != strLen(target)) 
     {
         return FALSE;
     }
 
-    for (int i = 0; i < src_len; i++) 
+    for (int pos = 0; pos < src_len; pos++) 
     {
-        if (src[i] != target[i])
+        if (src[pos] != target[pos])
         {
             return FALSE;
         }
@@ -68,39 +70,39 @@ int str_cmp(const char* src, char* target)
 }
 
 //CHECKS TO SEE IF STRING HAS SUBSTRING
-int str_contains(char* src, char* substr) 
+int strContains(char* src, char* substr) 
 {
-    int src_iter = 0;
-    int subsr_iter = 0;
-    char src_curr = src[0];
-    char substr_char = substr[0];
+    int srcIter = 0;
+    int substrIter = 0;
+    char srcCurr = src[0];
+    char substrChar = substr[0];
 
-    while (src_curr && substr_char) 
+    while (srcCurr && substrChar) 
     {
-        src_curr = src[src_iter];
+        srcCurr = src[srcIter];
 
-        if (src_curr == substr_char) 
+        if (srcCurr == substrChar) 
         {
-            subsr_iter++;
-            substr_char = substr[subsr_iter];
-            src_iter++;
+            substrIter++;
+            substrChar = substr[substrIter];
+            srcIter++;
 
         } 
         else 
         {
-            if (subsr_iter == 0) 
+            if (substrIter == 0) 
             {
-                src_iter++;
+                srcIter++;
             }
 
-            subsr_iter = 0;
-            substr_char = substr[0];
+            substrIter = 0;
+            substrChar = substr[0];
         }
     
     }
 
-    //IF SUBSTR_CHAR = NULL, RETURN TRUE
-    if (!substr_char) 
+    //IF substrChar = NULL, RETURN TRUE
+    if (!substrChar) 
     {
         return TRUE;
     }
@@ -109,72 +111,72 @@ int str_contains(char* src, char* substr)
 }
 
 //RETURNS END SYMBOL POSITION OF SUBSTRING IN STRING
-int sub_str_pos(char *src, char *target) 
+int substrPos(char *src, char *target) 
 {
-    int src_iter = 0;
-    int target_iter = 0;
-    char src_char = src[0];
-    char target_char = target[0];
+    int srcIter = 0;
+    int targetIter = 0;
+    char srcChar = src[0];
+    char targetChar = target[0];
 
-    if (!str_contains(src, target)) 
+    if (!strContains(src, target)) 
     {
         return -1;
     }
 
-    while (src_char && target_char) 
+    while (srcChar && targetChar) 
     {
-        src_char = src[src_iter];
+        srcChar = src[srcIter];
         
-        if (src_char == target_char) 
+        if (srcChar == targetChar) 
         {
-            target_iter++;
-            target_char = target[target_iter];
-            src_iter++;
+            targetIter++;
+            targetChar = target[targetIter];
+            srcIter++;
 
         } 
         else 
         {
-            if (target_iter == 0) 
+            if (targetIter == 0) 
             {
-                src_iter++;
+                srcIter++;
             }
 
-            target_iter = 0;
-            target_char = target[0];
+            targetIter = 0;
+            targetChar = target[0];
         }
     }
 
-    return src_iter;
+    return srcIter;
 }
 
 //REVERSES A STRING IN PLACE
 void rev_str(char *src) 
 {
     char tmp;
-    int len = str_len(src) - 1; //IGNORE NULL TERMINATOR
-    int half_len = len / 2;
+    int len = strLen(src) - 1; //IGNORE NULL TERMINATOR
+    int halfLen = len / 2;
 
     if (len % 2 != 0) 
     {
-        half_len++;
+        halfLen++;
     }
 
-    for (int i = 0; i < half_len; i++) 
+    for (int pos = 0; pos < halfLen; pos++) 
     {
-        tmp = src[len - i];
-        src[len - i] = src[i];
-        src[i] = tmp;
+        tmp = src[len - pos];
+        src[len - pos] = src[pos];
+        src[pos] = tmp;
     }
 }
 
 //CREATES A SUBSTRING FROM INDEX START TO END AND STORES IT IN substr
-void sub_str(char *src, int start, int end, char *substr) 
+void substr(char *src, int start, int end, char *substr) 
 {
     int iter = 0;
 
-    for (int i = start; i < end; i++) 
+    for (int pos = start; pos < end; pos++) 
     {
-        substr[iter] = src[i];
+        substr[iter] = src[pos];
         iter++;
     }
 
@@ -182,41 +184,41 @@ void sub_str(char *src, int start, int end, char *substr)
 }
 
 //REMOVES ALL NEWLINE CHARACTERS IN A STRING
-void remove_newline(char *src) 
+void removeNewline(char *src) 
 {
-    int pos = sub_str_pos(src, "\n");
-    int i;
+    int pos = substrPos(src, "\n");
+    int pos;
     char *tmp = (char*) malloc(sizeof(char) * 100);
 
     pos--; //MOVE TO FRONT OF THE SUBSTR POS FOUND
 
     while (pos > 0) 
     {
-        for (i = 0; i < pos; i++) 
+        for (pos = 0; pos < pos; pos++) 
         {
-            tmp[i] = src[i];
+            tmp[pos] = src[pos];
         }
 
-        tmp[i] = '\0';
-        str_copy(tmp, src);
-        pos = sub_str_pos(src, "\n");
+        tmp[pos] = '\0';
+        strCopy(tmp, src);
+        pos = substrPos(src, "\n");
     }
 
     free(tmp);
 }
 
 //REMOVES ALL NON_SYMBOL CHARACTERS
-void remove_non_symbols(char *src) 
+void removeNonSymbols(char *src) 
 {
-    int len = str_len(src);
+    int len = strLen(src);
     int iter = 0;
-    int i;
+    int pos;
     char sym;
     char *tmp = (char*) malloc(sizeof(char) * 100);
 
-    for (i = 0; i < len; i++) 
+    for (pos = 0; pos < len; pos++) 
     {
-        sym = src[i];
+        sym = src[pos];
 
         if (sym > 32 && sym < 127) 
         {
@@ -225,8 +227,8 @@ void remove_non_symbols(char *src)
         }
     }
 
-    tmp[i] = '\0';
-    str_copy(tmp, src);
+    tmp[pos] = '\0';
+    strCopy(tmp, src);
     free(tmp);
 }
 
@@ -234,21 +236,21 @@ void remove_non_symbols(char *src)
 float s2f(char *src) 
 {
     int iter = 0;
-    char curr_char = src[0];
-    int decimal_pos = sub_str_pos(src, ".");
-    int places = decimal_pos - 2; //SUBTRACT 2 IN ORDER TO GET TO ONE BEFORE THE TARGET CHAR
+    char currChar = src[0];
+    int decimalPos = substrPos(src, ".");
+    int places = decimalPos - 2; //SUBTRACT 2 IN ORDER TO GET TO ONE BEFORE THE TARGET CHAR
     float num = 0.0f;
 
-    while (curr_char) 
+    while (currChar) 
     {
-        if (curr_char - 48 >= 0 && curr_char - 48 < 10) 
+        if (currChar >= '0' && currChar <= '9') 
         {
-            num += (curr_char - 48) * raiseToPower(10, places);
+            num += (currChar - 48) * raiseToPower(10, places);
             places--;
         }
 
         iter++;
-        curr_char = src[iter];
+        currChar = src[iter];
         
     }
 
@@ -258,13 +260,13 @@ float s2f(char *src)
 //converts a string into an int value
 int s2i(char *src) 
 {
-    int len = str_len(src);
+    int len = strLen(src);
     int num = 0;
     int currNum;
     for (int pos = 0; pos < len; pos++) 
     {
         num *= 10;
-        currNum = cs2(src[pos]);
+        currNum = c2i(src[pos]);
 
         if (currNum > 0 && currNum < 10) 
         {
@@ -272,7 +274,7 @@ int s2i(char *src)
         } 
         else 
         {
-            return NON_NUMERIC_STRING_ERROR;
+            return currNum;
         }
     }
 
@@ -316,76 +318,68 @@ int c2i(char src)
             num = 9;
             break;
         default:
-            num = 
+            num = -1;
     }
+    
+    return num;
 }
 
 //CHECKS PROVIDED STRING AGAINST COMPATIBLE SCHEDULER TYPES
-int check_cpu_sched(char *src) 
+int checkCpuSched(char *src) 
 {
-    if (str_cmp(src, "FCFS-N")
-    || str_cmp(src, "SJF-N")
-    || str_cmp(src, "SRTF-P")
-    || str_cmp(src, "FCFS-P") 
-    || str_cmp(src, "RR-P")) 
-    {
-        return TRUE;
-    }
-
-    return FALSE;
+    return strCmp(src, "FCFS-N")
+    || strCmp(src, "SJF-N")
+    || strCmp(src, "SRTF-P")
+    || strCmp(src, "FCFS-P") 
+    || strCmp(src, "RR-P");
 }
 
 //CHECKS STRING AGAINST COMPATIBLE LOG TO TYPES
-int check_log_to(char *src) 
+int checkLogTo(char *src) 
 {
-    if (str_cmp(src, "Monitor") 
-    || str_cmp(src, "File") 
-    || str_cmp(src, "Both")) 
-    {
-        return TRUE;
-    }
-
-    return FALSE;
+    return strCmp(src, "Monitor") 
+    || strCmp(src, "File") 
+    || strCmp(src, "Both");
 }
 
 //SETTS ALL VALUES IN A STRING TO NULL
-void str_clear(char *src) 
+void strClear(char *src) 
 {
-    int len = str_len(src);
+    int len = strLen(src);
 
-    for (int i = len; i > 0; i--) 
+    for (int pos = len; pos > 0; pos--) 
     {
-        src[i] = '\0';
+        src[pos] = '\0';
     }
 }
 
 //REMOVES ALL NON-NUMBERS FROM A STRING
-void str_rm_non_numbers(char *src) 
+void strRmNonNumbers(char *src) 
 {
-    int i, len, num;
+    int pos, len, num;
 
-    i = 0;
-    len = str_len(src);
+    pos = 0;
+    len = strLen(src);
 
-    for (i = 0; i < len; i++) 
+    for (pos = 0; pos < len; pos++) 
     {
-        num = src[i] - 48;
+        num = c2i(src[pos]);
 
         if (num > 9 || num < 0) 
         {
-            src[i] = src[i+1];
+            src[pos] = src[pos+1];
         }
     }
 }
 
 //CHECKS IF A CHARACTER IS A NUMBER
-int char_is_num(char src) 
+int charIsNum(char src) 
 {
     return src >= '0' && src <= 58;
 }
 
 //CHECKS IF A CHARACTER IS UPPERCASE
-int char_is_upper(char src) 
+int charIsUpper(char src) 
 {
     return src >= 'A' && src <= 'Z';
 }

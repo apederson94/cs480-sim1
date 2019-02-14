@@ -11,7 +11,7 @@ int main(int argc, char const *argv[]) {
     //VARIABLE DECLARATIONS
     char *fileExt;
     char *fileName = (char*) argv[1];
-    FILE *metaDataFile;
+    FILE *metaDataFile, *configFile;
     struct configValues *settings = (struct configValues*) malloc(sizeof(struct configValues));
     struct simAction *actionsHead = (struct simAction*) malloc(sizeof(struct simAction));
     int cfgVal, mdfVal;
@@ -24,23 +24,23 @@ int main(int argc, char const *argv[]) {
     }
 
     //INPUT FORMAT CHECK
-    fileExt = get_fileExt(fileName);
-    if (!str_cmp(fileExt, ".cnf")) 
+    fileExt = getFileExt(fileName);
+    if (!strCmp(fileExt, ".cnf")) 
     {
         displayError(FILE_TYPE_ERROR);
         return 1;
     }
 	
     //OPEN CONFIG FILE AND ENSURES IT DID NOT FAIL
-    FILE *config_file = fopen(fileName, "r");
-    if (!config_file) 
+    configFile = fopen(fileName, "r");
+    if (!configFile) 
     {
         displayError(CONFIG_FILE_OPEN_ERROR);
         return 1;
     }
 
 	//READ IN CONFIG FILE VALUES
-    cfgVal = read_config_file(config_file, settings);
+    cfgVal = readConfigFile(configFile, settings);
 
     //ERROR CHECKING FOR CONFIG FILE READING
     if (cfgVal > 0) 
@@ -49,17 +49,17 @@ int main(int argc, char const *argv[]) {
         return 1;
     }
 
-    fclose(config_file);
+    fclose(configFile);
 	
     //OPENS META-DATA FILE AND ENSURES IT DID NOT FAIL
-    metaDataFile = fopen(settings->mdf_path, "r");
+    metaDataFile = fopen(settings->mdfPath, "r");
     if (!metaDataFile) 
     {
         displayError(MDF_OPEN_ERROR);
         return 1;
     }
 	
-    mdfVal = read_metaDataFile(metaDataFile, actionsHead);
+    mdfVal = readMetaDataFile(metaDataFile, actionsHead);
 	
     //ERROR CHECKING FOR META-DATA FILE READING
     if (mdfVal > 0) 
@@ -71,16 +71,16 @@ int main(int argc, char const *argv[]) {
     //PRINTING RESULTS OF FILE READINGS
     printf("Config File Upload Component\n============================\n\n");
     printf("Config File Display\n===================\n\n");
-    print_configValues(settings);
+    printConfigValues(settings);
     printf("\n");
     printf("Meta-Data File Upload Component\n===============================\n\n");
     printf("Meta-Data File Display\n======================\n\n");
-    print_simActions(actionsHead);
+    printSimActions(actionsHead);
     
     fclose(metaDataFile);
 
     //FREEING DATA STRUCTS USED TO STORE READ INFORMATION
-    free_actions(actionsHead);
+    freeActions(actionsHead);
     free(settings);
 
     return 0;
