@@ -3,3 +3,5 @@
 *.lgf
 *.o
 sim01
+.main.c.swp
+.vscode
