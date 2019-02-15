@@ -4,6 +4,6 @@
 //ALL MATH UTILS
 
 //RAISES AN INT BASE NUMBER TO A POWER AND RETURNS RESULT
-int raiseToPower(int base, int power);
+float raiseToPower(int base, int power);
 
 #endif

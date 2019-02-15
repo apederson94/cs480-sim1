@@ -32,13 +32,13 @@ struct simAction
 void freeActions(struct simAction* head);
 
 //PRINTS ALL RELEVANT simAction INFORMATION
-void printSimAction(struct simAction *src);
+//void printSimAction(struct simAction *src);
 
 //PRINTS ALL ALL RELEVANT simAction INFORMATION FOR ALL simActionS
-void printSimActions(struct simAction *head);
+void printSimActions(struct simAction *head, struct configValues *settings);
 
 //PRINTS ALL INFORMATION FORM A configValues STRUCT
-void printConfigValues(struct configValues *src);
+void printConfigValues(struct configValues *src, char *fileName);
 
 //TURNS A COMMAND STRING INTO AN ACTION
 int setActionData(char *command, struct simAction *action);

@@ -1,21 +1,27 @@
+#include "mathUtils.h"
+
 //ALL MATH UTILS
 
 //RAISES AN INT BASE NUMBER TO A POWER AND RETURNS RESULT
-int raiseToPower(int base, int power)
+float raiseToPower(int base, int power)
 {
-    int value = base;
+    float value = 1;
 
-    if (power == 0) 
-    {
-        value = 1;
-    } 
-    else 
+    if (power > 0) 
     {
         for (int currentPower = 0; currentPower < power; currentPower++) 
         {
-            value *= currentPower;
+            value *= base;
         }
     }
+    else
+    {
+        for (int currentPower = 0; currentPower > power; currentPower--) 
+        {
+            value /= base;
+        }
+    }
+    
 
     return value;
 }

@@ -2,8 +2,6 @@
 #define BOOLEANS
 
 //TRUE & FALSE VALUES FOR BETTER READABILITY
-
-#define TRUE 1;
-#define FALSE 0;
+typedef enum {FALSE, TRUE} bool;
 
 #endif

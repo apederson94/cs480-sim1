@@ -1,6 +1,9 @@
 #include "dataStructures.h"
 #include "booleans.h"
 #include "errors.h"
+#include "strUtils.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 //DATA STRUCTURE FUNCTIONS
 
@@ -18,36 +21,106 @@ void freeActions(struct simAction* head)
 }
 
 //PRINTS ALL RELEVANT simAction INFORMATION
-void printSimAction(struct simAction *src) 
+//CURRENTLY DEPRECATED
+/* void printSimAction(struct simAction *src, char *logFile, char *logTo) 
 {
-    printf("Op code letter: %c\n", src->commandLetter);
-    printf("Op code name  : %s\n", src->operationString);
-    printf("Op code value : %d\n", src->assocVal);
-}
+    if (strCmp(logTo, "Monitor")
+    || strCmp(logTo, "Both")) 
+    {
+        printf("Op code letter: %c\n", src->commandLetter);
+        printf("Op code name  : %s\n", src->operationString);
+        printf("Op code value : %d\n", src->assocVal);
+    }
+
+    if (strCmp(logTo, "File")
+    || strCmp(logTo, "Both"))
+    {
+        file =
+        fprintf("Op code letter: %c\n", src->commandLetter);
+        fprintf("Op code name  : %s\n", src->operationString);
+        fprintf("Op code value : %d\n", src->assocVal);
+    }
+    
+} */
 
 //PRINTS ALL ALL RELEVANT simAction INFORMATION FOR ALL simActionS
-void printSimActions(struct simAction *head) 
+void printSimActions(struct simAction *head, struct configValues *settings) 
 {
-    while (head->next) 
+    char *logPath = settings->logPath;
+    char *logTo = settings->logTo;
+    FILE *logFile;
+    struct simAction *ptr = head;
+
+    if (strCmp(logTo, "File")
+    || strCmp(logTo, "Both"))
     {
-        printSimAction(head);
-        printf("\n");
-        head = head->next;
+       logFile = fopen(logPath, "r");
+       while (ptr->next) 
+        {
+            fprintf(logFile, "Op code letter: %c\n", ptr->commandLetter);
+            fprintf(logFile, "Op code name  : %s\n", ptr->operationString);
+            fprintf(logFile, "Op code value : %d\n", ptr->assocVal);
+            fprintf(logFile, "\n");
+            ptr = ptr->next;
+        }
+        fclose(logFile);
     }
+
+    ptr = head;
+
+    if (strCmp(logTo, "Monitor")
+    || strCmp(logTo, "Both"))
+    {
+        printf("Op code letter: %c\n", ptr->commandLetter);
+        printf("Op code name  : %s\n", ptr->operationString);
+        printf("Op code value : %d\n", ptr->assocVal);
+        printf("\n");
+        ptr = ptr->next;
+    }
+    
+    free(logFile);
+    free(logTo);
+    free(ptr);
 }
 
 //PRINTS ALL INFORMATION FORM A configValues STRUCT
-void printConfigValues(struct configValues *src) 
+void printConfigValues(struct configValues *src, char *fileName) 
 {
-    printf("Version                : %f\n", src->ver);
-    printf("Program file name      : %s\n", src->mdfPath);
-    printf("CPU schedule selection : %s\n", src->cpuSched);
-    printf("Quantum time           : %d\n", src->quantumTime);
-    printf("Memory Available       : %d\n", src->memoryAvailable);
-    printf("Process cycle rate     : %d\n", src->cpuCycleTime);
-    printf("I/O cycle rate         : %d\n", src->ioCycleTime);
-    printf("Log to selection       : %s\n", src->logTo);
-    printf("Log file name          : %s\n", src->logPath);
+    FILE *logFile;
+    char *printTo = src->logTo;
+
+    if (strCmp(printTo, "Monitor")
+    || strCmp(printTo, "Both"))
+    {
+        printf("Version                : %f\n", src->ver);
+        printf("Program file name      : %s\n", src->mdfPath);
+        printf("CPU schedule selection : %s\n", src->cpuSched);
+        printf("Quantum time           : %d\n", src->quantumTime);
+        printf("Memory Available       : %d\n", src->memoryAvailable);
+        printf("Process cycle rate     : %d\n", src->cpuCycleTime);
+        printf("I/O cycle rate         : %d\n", src->ioCycleTime);
+        printf("Log to selection       : %s\n", src->logTo);
+        printf("Log file name          : %s\n", src->logPath);
+    }
+
+    if (strCmp(printTo, "File")
+    || strCmp(printTo, "Both")) 
+    {
+        logFile = fopen(src->logPath, "w");
+        fprintf(logFile, "Begin %s upload...\n", fileName);
+        fprintf(logFile, "%s uploaded sucessfully!\n", fileName);
+        fprintf(logFile, "Version                : %g\n", src->ver);
+        fprintf(logFile, "Program file name      : %s\n", src->mdfPath);
+        fprintf(logFile, "CPU schedule selection : %s\n", src->cpuSched);
+        fprintf(logFile, "Quantum time           : %d\n", src->quantumTime);
+        fprintf(logFile, "Memory Available       : %d\n", src->memoryAvailable);
+        fprintf(logFile, "Process cycle rate     : %d\n", src->cpuCycleTime);
+        fprintf(logFile, "I/O cycle rate         : %d\n", src->ioCycleTime);
+        fprintf(logFile, "Log to selection       : %s\n", src->logTo);
+        fprintf(logFile, "Log file name          : %s\n", src->logPath);
+        fclose(logFile);
+    }
+    
 }
 
 //TURNS A COMMAND STRING INTO AN ACTION

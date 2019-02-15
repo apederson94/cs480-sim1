@@ -1,3 +1,5 @@
+#include "dataStructures.h"
+
 #ifndef FILE_UTILS
 #define FILE_UTILS
 

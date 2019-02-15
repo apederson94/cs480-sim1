@@ -1,6 +1,7 @@
 #include "booleans.h"
 #include "mathUtils.h"
 #include "errors.h"
+#include <stdlib.h>
 
 //ALL STRING-RELATED UTILITIES
 
@@ -183,35 +184,11 @@ void substr(char *src, int start, int end, char *substr)
     substr[iter] = '\0';
 }
 
-//REMOVES ALL NEWLINE CHARACTERS IN A STRING
-void removeNewline(char *src) 
-{
-    int pos = substrPos(src, "\n");
-    int pos;
-    char *tmp = (char*) malloc(sizeof(char) * 100);
-
-    pos--; //MOVE TO FRONT OF THE SUBSTR POS FOUND
-
-    while (pos > 0) 
-    {
-        for (pos = 0; pos < pos; pos++) 
-        {
-            tmp[pos] = src[pos];
-        }
-
-        tmp[pos] = '\0';
-        strCopy(tmp, src);
-        pos = substrPos(src, "\n");
-    }
-
-    free(tmp);
-}
-
 //REMOVES ALL NON_SYMBOL CHARACTERS
 void removeNonSymbols(char *src) 
 {
     int len = strLen(src);
-    int iter = 0;
+    int tmpPos = 0;
     int pos;
     char sym;
     char *tmp = (char*) malloc(sizeof(char) * 100);
@@ -220,10 +197,14 @@ void removeNonSymbols(char *src)
     {
         sym = src[pos];
 
-        if (sym > 32 && sym < 127) 
+        if ((sym >= 'A' && sym <= 'Z') 
+        || (sym >= 'a' && sym <= 'z') 
+        || (sym >= '0' && sym <= '9')
+        || sym == '-' 
+        || sym == '.') 
         {
-            tmp[iter] = sym;
-            iter++;
+            tmp[tmpPos] = sym;
+            tmpPos++;
         }
     }
 
@@ -232,59 +213,11 @@ void removeNonSymbols(char *src)
     free(tmp);
 }
 
-//CONVERTS A STRING TO A FLOAT VALUE
-float s2f(char *src) 
-{
-    int iter = 0;
-    char currChar = src[0];
-    int decimalPos = substrPos(src, ".");
-    int places = decimalPos - 2; //SUBTRACT 2 IN ORDER TO GET TO ONE BEFORE THE TARGET CHAR
-    float num = 0.0f;
-
-    while (currChar) 
-    {
-        if (currChar >= '0' && currChar <= '9') 
-        {
-            num += (currChar - 48) * raiseToPower(10, places);
-            places--;
-        }
-
-        iter++;
-        currChar = src[iter];
-        
-    }
-
-    return num;
-}
-
-//converts a string into an int value
-int s2i(char *src) 
-{
-    int len = strLen(src);
-    int num = 0;
-    int currNum;
-    for (int pos = 0; pos < len; pos++) 
-    {
-        num *= 10;
-        currNum = c2i(src[pos]);
-
-        if (currNum > 0 && currNum < 10) 
-        {
-            num += currNum;
-        } 
-        else 
-        {
-            return currNum;
-        }
-    }
-
-    return num;
-}
-
 //EVALUATES A SINGLE CHAR TO AN INT
 int c2i(char src)
 {
     int num;
+
     switch (src)
     {
         case '0':
@@ -321,6 +254,57 @@ int c2i(char src)
             num = -1;
     }
     
+    return num;
+}
+
+//CONVERTS A STRING TO A FLOAT VALUE
+float s2f(char *src) 
+{
+    int iter = 0;
+    char currChar = src[0];
+    int decimalPos = substrPos(src, ".");
+    int places = decimalPos - 2; //SUBTRACT 2 IN ORDER TO GET TO ONE BEFORE THE TARGET CHAR
+    float num = 0.0f;
+
+    while (currChar) 
+    {
+        if (currChar >= '0' && currChar <= '9') 
+        {
+            num += c2i(currChar) * raiseToPower(10, places);
+            places--;
+        } else if (currChar == '.') {
+            places = -1;
+        }
+
+        iter++;
+        currChar = src[iter];
+        
+    }
+
+    return num;
+}
+
+//converts a string into an int value
+int s2i(char *src) 
+{
+    int len = strLen(src);
+    int num = 0;
+    int currNum;
+    for (int pos = 0; pos < len; pos++) 
+    {
+        num *= 10;
+        currNum = c2i(src[pos]);
+
+        if (currNum >= 0 && currNum < 10) 
+        {
+            num += currNum;
+        } 
+        else 
+        {
+            return currNum;
+        }
+    }
+
     return num;
 }
 

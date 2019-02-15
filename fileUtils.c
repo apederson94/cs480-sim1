@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <stdio.h>
 #include "strUtils.h"
 #include "booleans.h"
@@ -12,7 +13,12 @@ int readConfigFile(char *fileName, struct configValues *settings)
     char line[100];
     int pos, len, valIter, num;
     float ver;
-    FILE *config = open(fileName, "r");
+    FILE *config = fopen(fileName, "r");
+
+    //OPEN CONFIG FILE AND ENSURE IT DOES NOT FAIL
+    if (!config) {
+        return CONFIG_FILE_OPEN_ERROR;
+    }
 
     valIter = 0;
 
@@ -20,16 +26,17 @@ int readConfigFile(char *fileName, struct configValues *settings)
     {
         char *value = (char*) malloc(sizeof(char) * 100);
         pos = substrPos(line, ":"); 
-        
         if (pos >= 0)
         { 
             len = strLen(line);
             substr(line, pos, len, value);
 
+            removeNonSymbols(value);
+
             if (strContains(line, "Version/Phase")) 
             {
-                removeNonSymbols(value);
-                ver = a2f(value);
+                
+                ver = s2f(value);
 
                 if (ver > 10.0f || ver < 0.0f) {
                     return VERSION_PHASE_VALUE_ERROR;
@@ -37,9 +44,10 @@ int readConfigFile(char *fileName, struct configValues *settings)
 
                 settings->ver = ver;
 
-            } else if (strContains(line, "Log File")) 
+            } 
+            else if (strContains(line, "Log File")) 
             {
-                removeNonSymbols(value);
+                
 
                 if (strCmp(settings->logTo, "File") 
                 || strCmp(settings->logTo, "Both")) 
@@ -51,27 +59,31 @@ int readConfigFile(char *fileName, struct configValues *settings)
                     settings->logPath = "N/A";
                 }
 
-            } else if (strContains(line, "CPU Scheduling Code")) 
+            } 
+            else if (strContains(line, "CPU Scheduling Code")) 
             {
-                removeNonSymbols(value);
+                
 
                 if (strCmp(value, "NONE")) 
                 {
                     settings->cpuSched = "FCFS-N";
 
-                } else if (!checkCpuSched(value)) 
+                } 
+                else if (!checkCpuSched(value)) 
                 {
                     return UNSUPPORTED_CPU_SCHED_ERROR;
 
-                 } else 
+                 } 
+                 else 
                  {
                     settings->cpuSched = value;
                  }
 
-            } else if (strContains(line, "Quantum Time")) 
+            } 
+            else if (strContains(line, "Quantum Time")) 
             {
-                removeNonSymbols(value);
-                num = a2i(value);
+                
+                num = s2i(value);
 
                 if (num > 100 || num < 0) {
                     return QUANTUM_TIME_VALUE_ERROR;
@@ -79,26 +91,28 @@ int readConfigFile(char *fileName, struct configValues *settings)
 
                 settings->quantumTime = num;
 
-            } else if (strContains(line, "Memory Available")) 
+            } 
+            else if (strContains(line, "Memory Available")) 
             {
                 if (!strContains(line, "(KB)")) {
                     return MDF_MEMORY_UNIT_ERROR;
                 }
 
-                removeNonSymbols(value);
-                num = a2i(value);
+                
+                num = s2i(value);
 
                 if (num < 0 || num > 102400) 
                 {
                     return MEMORY_AVAIL_VALUE_ERROR;
                 }
 
-                settings->memoryAvailable = a2i(value);
+                settings->memoryAvailable = s2i(value);
 
-            } else if (strContains(line, "Processor Cycle Time")) 
+            } 
+            else if (strContains(line, "Processor Cycle Time")) 
             {
-                removeNonSymbols(value);
-                num = a2i(value);
+                
+                num = s2i(value);
 
                 if (num < 1 || num > 1000) 
                 {
@@ -107,10 +121,11 @@ int readConfigFile(char *fileName, struct configValues *settings)
 
                 settings->cpuCycleTime = num;
 
-            } else if (strContains(line, "I/O Cycle Time")) 
+            } 
+            else if (strContains(line, "I/O Cycle Time")) 
             {
-                removeNonSymbols(value);
-                num = a2i(value);
+                
+                num = s2i(value);
 
                 if (num < 1 || num > 10000) 
                 {
@@ -119,9 +134,10 @@ int readConfigFile(char *fileName, struct configValues *settings)
 
                 settings->ioCycleTime = num;
 
-            } else if (strContains(line, "Log To")) 
+            } 
+            else if (strContains(line, "Log To")) 
             {
-                removeNonSymbols(value);
+                
 
                 if (!checkLogTo(value)) 
                 {
@@ -129,9 +145,10 @@ int readConfigFile(char *fileName, struct configValues *settings)
                 }
                 settings->logTo = value;
 
-            } else if (strContains(line, "File Path:")) 
+            } 
+            else if (strContains(line, "File Path:")) 
             {
-                removeNonSymbols(value);
+                
 
                 if (strContains(value, "/")) {
                     return MDF_LOCATION_ERROR;
@@ -157,7 +174,13 @@ int readMetaDataFile(char *fileName, struct simAction *firstAction)
     cmdIter = 0;
     char command[40];
     struct simAction *current = (struct simAction*) malloc(sizeof(struct simAction));
-    FILE *mdf = open(fileName, 'r');
+    
+    //OPENS METADATA FILE AND ENSURE IT DID NOT FAIL
+    FILE *mdf = fopen(fileName, "r");
+
+    if (!mdf) {
+        return MDF_OPEN_ERROR;
+    }
 
     current = firstAction;
 

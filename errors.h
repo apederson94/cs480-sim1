@@ -26,4 +26,7 @@ enum
     CORRUPTED_MDF_ERROR
 };
 
-#endif ERRORS
+//DISPLAYS ERRORS
+void displayError(int err);
+
+#endif
