@@ -1,9 +1,7 @@
 #ifndef BOOLEANS
 #define BOOLEANS
 
-//defines boolean values for easier boolean usage
-
-#define TRUE 1;
-#define FALSE 0;
+//TRUE & FALSE VALUES FOR BETTER READABILITY
+typedef enum {FALSE, TRUE} bool;
 
 #endif

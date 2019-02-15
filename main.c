@@ -1,37 +1,48 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "booleans.h"
-#include "str_utils.h"
-#include "file_utils.h"
-#include "data_structures.h"
+#include "strUtils.h"
+#include "fileUtils.h"
+#include "dataStructures.h"
+#include "errors.h"
 
 int main(int argc, char const *argv[]) {
-    char file_ext[5];
-    char *file_name = (char*) argv[1];
-    struct config_values *settings = (struct config_values*) malloc(sizeof(struct config_values));
-    struct sim_action *actions_head = (struct sim_action*) malloc(sizeof(struct sim_action));
+
+    //VARIABLE DECLARATIONS
+    char *fileExt;
+    char *fileName = (char*) argv[1];
+    struct configValues *settings = (struct configValues*) malloc(sizeof(struct configValues));
+    struct simAction *actionsHead = (struct simAction*) malloc(sizeof(struct simAction));
+    int cfgVal, mdfVal;
     
-    //check to make sure there are the correct number of inputs
-    if (argc != 2) {
-        fprintf(stderr, "ERROR: sim0x takes exactly one argument.\n");
-        exit(1);
+    //CORRECT NUMBER OF INPUTS CHECK
+    if (argc != 2) 
+    {
+        displayError(NUM_ARGS_ERROR);
+        return 1;
     }
 
-    //check to make sure the inputs are of the correct format
-    get_file_ext(file_name, file_ext);
-    if (!str_cmp(file_ext, ".cnf")) {
-        fprintf(stderr, "ERROR: sim0x can only read in .cnf files.\n");
-        exit(2);
+    //INPUT FORMAT CHECK
+    fileExt = getFileExt(fileName);
+    if (!strCmp(fileExt, ".cnf")) 
+    {
+        displayError(FILE_TYPE_ERROR);
+        return 1;
     }
 
-    //opens the config file and checks to make sure it was opened correctly
-    FILE *config_file = fopen(file_name, "r");
-    if (!config_file) {
-        fprintf(stderr, "ERROR: sim0x could not open the specified config file.\n");
-        exit(3);
-    }
-    int cfg_val = read_config_file(config_file, settings);
+    //STARTING FILE UPLOAD PROCESS
+    printf("Begin %s upload...\n", fileName);
 
+<<<<<<< HEAD
+	//READ IN CONFIG FILE VALUES
+    cfgVal = readConfigFile(fileName, settings);
+
+    //ERROR CHECKING FOR CONFIG FILE READING
+    if (cfgVal > 0) 
+    {
+        displayError(cfgVal);
+        return 1;
+=======
     print_config_values(settings);
 
     //closing the config file as it is no longer needed;
@@ -71,10 +82,36 @@ int main(int argc, char const *argv[]) {
     if (!meta_data_file) {
         printf("ERROR: sim0x could not open the specified meta data file.");
         exit(1);
+>>>>>>> master
     }
 
-    int mdf_val = read_meta_data_file(meta_data_file, &actions_head);
+    //PRINTING SUCCESS MESSAGE
+    printf("%s uploaded succesfully!\n", fileName);
 
+<<<<<<< HEAD
+    //PRINTING CONFIG FILE VALUES
+    printConfigValues(settings, fileName);
+    printf("\n");
+
+    //BEGINNING MDF FILE UPLOAD
+    printf("Begin %s file upload...\n", settings->mdfPath);
+    //printf("Meta-Data File Display\n======================\n\n");
+
+	
+    mdfVal = readMetaDataFile(settings->mdfPath, actionsHead);
+	
+    //ERROR CHECKING FOR META-DATA FILE READING
+    if (mdfVal > 0) 
+    {
+        displayError(mdfVal);
+    }
+    
+    //PRINTING SUCCESS MESSAGE
+    printf("%s uploaded succesfully!\n", settings->mdfPath);
+    
+    //PRINT TO LOGIC
+    printSimActions(actionsHead, settings);
+=======
     //closing the meta data file as it is no longer needed;
     fclose(meta_data_file);
 
@@ -118,9 +155,11 @@ int main(int argc, char const *argv[]) {
     }
     //freeing linked list acquired from meta-data file
     free_actions(actions_head);
+>>>>>>> master
 
+    //FREEING DATA STRUCTS USED TO STORE READ INFORMATION
+    freeActions(actionsHead);
     free(settings);
 
-    //TODO: free linked list of actions
     return 0;
 }
