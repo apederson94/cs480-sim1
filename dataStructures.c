@@ -54,7 +54,7 @@ void printSimActions(struct simAction *head, struct configValues *settings)
     if (strCmp(logTo, "File")
     || strCmp(logTo, "Both"))
     {
-       logFile = fopen(logPath, "r");
+       logFile = fopen(logPath, "a");
        while (ptr->next) 
         {
             fprintf(logFile, "Op code letter: %c\n", ptr->commandLetter);
@@ -71,11 +71,15 @@ void printSimActions(struct simAction *head, struct configValues *settings)
     if (strCmp(logTo, "Monitor")
     || strCmp(logTo, "Both"))
     {
-        printf("Op code letter: %c\n", ptr->commandLetter);
-        printf("Op code name  : %s\n", ptr->operationString);
-        printf("Op code value : %d\n", ptr->assocVal);
-        printf("\n");
-        ptr = ptr->next;
+        while (ptr->next)
+        {
+            printf("Op code letter: %c\n", ptr->commandLetter);
+            printf("Op code name  : %s\n", ptr->operationString);
+            printf("Op code value : %d\n", ptr->assocVal);
+            printf("\n");
+            ptr = ptr->next;
+        }
+        
     }
     
     free(logFile);
@@ -101,12 +105,13 @@ void printConfigValues(struct configValues *src, char *fileName)
         printf("I/O cycle rate         : %d\n", src->ioCycleTime);
         printf("Log to selection       : %s\n", src->logTo);
         printf("Log file name          : %s\n", src->logPath);
+        printf("\n");
     }
 
     if (strCmp(printTo, "File")
     || strCmp(printTo, "Both")) 
     {
-        logFile = fopen(src->logPath, "w");
+        logFile = fopen(src->logPath, "a");
         fprintf(logFile, "Begin %s upload...\n", fileName);
         fprintf(logFile, "%s uploaded sucessfully!\n", fileName);
         fprintf(logFile, "Version                : %g\n", src->ver);

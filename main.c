@@ -14,6 +14,8 @@ int main(int argc, char const *argv[]) {
     struct configValues *settings = (struct configValues*) malloc(sizeof(struct configValues));
     struct simAction *actionsHead = (struct simAction*) malloc(sizeof(struct simAction));
     int cfgVal, mdfVal;
+    bool logToFile = FALSE;
+    bool logToMon = FALSE;
     
     //CORRECT NUMBER OF INPUTS CHECK
     if (argc != 2) 
@@ -31,7 +33,7 @@ int main(int argc, char const *argv[]) {
     }
 
     //STARTING FILE UPLOAD PROCESS
-    printf("Begin %s upload...\n", fileName);
+    printf("Begin %s upload...\n\n", fileName);
 
 	//READ IN CONFIG FILE VALUES
     cfgVal = readConfigFile(fileName, settings);
@@ -44,14 +46,13 @@ int main(int argc, char const *argv[]) {
     }
 
     //PRINTING SUCCESS MESSAGE
-    printf("%s uploaded succesfully!\n", fileName);
+    printf("%s uploaded succesfully!\n\n", fileName);
 
     //PRINTING CONFIG FILE VALUES
     printConfigValues(settings, fileName);
-    printf("\n");
 
     //BEGINNING MDF FILE UPLOAD
-    printf("Begin %s file upload...\n", settings->mdfPath);
+    printf("Begin %s file upload...\n\n", settings->mdfPath);
     //printf("Meta-Data File Display\n======================\n\n");
 
 	
@@ -64,7 +65,7 @@ int main(int argc, char const *argv[]) {
     }
     
     //PRINTING SUCCESS MESSAGE
-    printf("%s uploaded succesfully!\n", settings->mdfPath);
+    printf("%s uploaded succesfully!\n\n", settings->mdfPath);
     
     //PRINT TO LOGIC
     printSimActions(actionsHead, settings);
